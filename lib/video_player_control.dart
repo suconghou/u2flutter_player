@@ -42,7 +42,7 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    final player = GestureDetector(
       onDoubleTap: _playOrPause,
       onTap: _togglePlayControl,
       child: Container(
@@ -65,6 +65,8 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
         ),
       ),
     );
+
+    return player;
   }
 
   // 拦截返回键
@@ -158,8 +160,7 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
   }
 
   Widget _top() {
-    final ctx = ModalRoute.of(context);
-    return Container(
+    final topbar = Container(
       width: double.infinity,
       height: 40,
       decoration: BoxDecoration(
@@ -173,32 +174,27 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          //在最上层或者不是横屏则隐藏按钮
-          ctx != null && ctx.isFirst && !_isFullScreen
-              ? Container()
-              : IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                  onPressed: backPress),
+          IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+              onPressed: backPress),
           Text(
             title,
             style: TextStyle(color: Colors.white),
           ),
-          //在最上层或者不是横屏则隐藏按钮
-          ctx != null && ctx.isFirst && !_isFullScreen
-              ? Container()
-              : IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.transparent,
-                  ),
-                  onPressed: () {},
-                ),
+          IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.transparent,
+            ),
+            onPressed: () {},
+          ),
         ],
       ),
     );
+    return _isFullScreen ? topbar : Container();
   }
 
   void backPress() {
