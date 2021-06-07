@@ -1,8 +1,8 @@
 name: u2flutter_player
 description: flutter video player
 version: 0.0.1
-author:
-homepage:
+repository: https://github.com/suconghou/u2flutter_player
+homepage: https://github.com/suconghou/u2flutter_player
 
 environment:
   sdk: ">=2.13.1 <3.0.0"
