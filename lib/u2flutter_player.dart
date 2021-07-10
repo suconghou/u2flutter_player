@@ -10,10 +10,10 @@ class VideoPlayerUI extends StatefulWidget {
   final double width;
   final double height;
   final String title;
-  final VideoPlayerController controller;
+  final PlayerOpts opts;
 
   VideoPlayerUI({
-    required this.controller, // 当前需要播放的地址
+    required this.opts, // 当前需要播放的地址
     this.width: double.infinity, // 播放器尺寸（大于等于视频播放区域）
     this.height: double.infinity,
     this.title = '', // 视频需要显示的标题
@@ -21,7 +21,7 @@ class VideoPlayerUI extends StatefulWidget {
 
   @override
   _VideoPlayerUIState createState() {
-    return _VideoPlayerUIState(controller);
+    return _VideoPlayerUIState(opts.controller);
   }
 }
 
@@ -132,7 +132,6 @@ class _VideoPlayerUIState extends State<VideoPlayerUI> {
       });
       return;
     }
-    // 此处不需要等待完成
     await controller.initialize();
     if (_destroyed) {
       return;
@@ -182,6 +181,35 @@ class _VideoPlayerUIState extends State<VideoPlayerUI> {
           totalDuration: controller.value.duration,
         );
       }
+    }
+  }
+}
+
+class PlayerOpts {
+  final String url;
+  PlayerOpts(this.url);
+  VideoPlayerController get controller {
+    return Players.getInstance(url);
+  }
+}
+
+class Players {
+  static VideoPlayerController? player;
+  static VideoPlayerController getInstance(String url) {
+    if (player == null) {
+      player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
+    }
+    // 已经存在实例了,判断是否相同
+    if (player?.dataSource != url) {
+      player?.pause();
+      player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
+    }
+    return player!;
+  }
+
+  static pause() {
+    if (player != null) {
+      player?.pause();
     }
   }
 }

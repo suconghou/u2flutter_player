@@ -209,7 +209,7 @@ packages:
       name: video_player
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.5"
+    version: "2.1.10"
   video_player_platform_interface:
     dependency: transitive
     description:

@@ -214,6 +214,7 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
     /// 同样的，点击动态播放或者暂停
     if (videoInit) {
       controller.value.isPlaying ? controller.pause() : controller.play();
+      setState(() {});
       _startPlayControlTimer(); // 操作控件后，重置延迟隐藏控件的timer
     }
   }
