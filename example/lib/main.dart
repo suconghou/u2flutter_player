@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:u2flutter_player/u2flutter_player.dart';
 
 void main() {
@@ -38,6 +39,8 @@ class VideoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final url = "http://share.suconghou.cn/video/mrHqzfjdpX8.mpd";
+    final controller =
+        VideoPlayerController.network(url, formatHint: VideoFormat.dash);
     return Scaffold(
       backgroundColor: Colors.white70,
       body: Center(
@@ -45,7 +48,7 @@ class VideoPage extends StatelessWidget {
         child: SizedBox(
           height: 300,
           width: 300,
-          child: VideoPlayerUI.network(url: url),
+          child: VideoPlayerUI(controller: controller),
         ),
       ),
     );
