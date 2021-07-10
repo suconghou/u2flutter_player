@@ -1,6 +1,6 @@
 name: u2flutter_player
 description: flutter video player, used video_player with progress, volume and brightness
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/suconghou/u2flutter_player
 homepage: https://github.com/suconghou/u2flutter_player
 publish_to: https://pub.dev
