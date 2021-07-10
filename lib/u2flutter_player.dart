@@ -33,6 +33,7 @@ class _VideoPlayerUIState extends State<VideoPlayerUI> {
   bool _videoInit = false;
   bool _videoError = false;
   bool _destroyed = false;
+  int render = DateTime.now().millisecondsSinceEpoch;
   final VideoPlayerController controller;
 
   /// 记录是否全屏
@@ -148,16 +149,24 @@ class _VideoPlayerUIState extends State<VideoPlayerUI> {
       controller.removeListener(_videoListener);
       return;
     }
-    if (controller.value.isInitialized || controller.value.isPlaying) {
+    if ((controller.value.isInitialized || controller.value.isPlaying) &&
+        !_videoInit) {
       setState(() {
         _videoInit = true;
       });
     }
-    if (controller.value.hasError) {
+    if (controller.value.hasError && !_videoError) {
       setState(() {
         _videoError = true;
       });
-    } else {
+      return;
+    }
+    if (!controller.value.hasError) {
+      final t = DateTime.now().millisecondsSinceEpoch;
+      if (t - render < 800) {
+        return;
+      }
+      render = t;
       Duration? res = await controller.position;
       if (res == null) {
         return;
