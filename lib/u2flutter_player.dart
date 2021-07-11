@@ -55,6 +55,14 @@ class _VideoPlayerUIState extends State<VideoPlayerUI> {
   void dispose() {
     _destroyed = true;
     controller.removeListener(_videoListener);
+    // 再切换全屏时也会调用dispose,是先创建新的,然后销毁老的.
+    // 我们检查创建时间,如果刚创建,则不销毁
+    final t = DateTime.now().millisecondsSinceEpoch;
+    if (t - Players.timer > 1000) {
+      controller.pause();
+      controller.dispose();
+      Players.player = null;
+    }
     super.dispose();
   }
 
@@ -102,7 +110,7 @@ class _VideoPlayerUIState extends State<VideoPlayerUI> {
       );
     } else if (_videoError) {
       return Text(
-        '加载出错',
+        '加载出错${controller.value.errorDescription}',
         style: TextStyle(color: Colors.white),
       );
     } else {
@@ -194,22 +202,17 @@ class PlayerOpts {
 }
 
 class Players {
+  static int timer = DateTime.now().millisecondsSinceEpoch;
   static VideoPlayerController? player;
   static VideoPlayerController getInstance(String url) {
     if (player == null) {
       player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
     }
     // 已经存在实例了,判断是否相同
-    if (player?.dataSource != url) {
-      player?.pause();
+    if (player?.dataSource != url || player!.value.hasError) {
       player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
     }
+    timer = DateTime.now().millisecondsSinceEpoch;
     return player!;
-  }
-
-  static pause() {
-    if (player != null) {
-      player?.pause();
-    }
   }
 }
