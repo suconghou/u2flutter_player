@@ -30,15 +30,14 @@ class ControllerWidget extends InheritedWidget {
   }
 }
 
-const hour = 3600000;
-
 String durationStr(int ms) {
-  var format = 'mm:ss';
-  if (ms > hour) {
-    format = 'H:mm:ss';
-  }
-  return DateUtil.formatDateMs(
+  final s = DateUtil.formatDateMs(
     ms,
-    format: format,
+    format: 'mm:ss',
   );
+  final h = (ms / 3600000).floor();
+  if (h >= 1) {
+    return "$h:$s";
+  }
+  return s;
 }
