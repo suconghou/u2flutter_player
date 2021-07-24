@@ -43,10 +43,7 @@ class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
       }
       setState(() {
         progressValue = position / duration * 100;
-        labelProgress = DateUtil.formatDateMs(
-          progressValue.toInt(),
-          format: 'mm:ss',
-        );
+        labelProgress = durationStr(progressValue.toInt());
       });
     }
   }
@@ -118,10 +115,7 @@ class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
     int duration = controller.value.duration.inMilliseconds;
     setState(() {
       progressValue = value;
-      labelProgress = DateUtil.formatDateMs(
-        (value / 100 * duration).toInt(),
-        format: 'mm:ss',
-      );
+      labelProgress = durationStr((value / 100 * duration).toInt());
     });
   }
 }

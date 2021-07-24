@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:common_utils/common_utils.dart';
 
 import 'video_player_control.dart';
 
@@ -27,4 +28,17 @@ class ControllerWidget extends InheritedWidget {
   bool updateShouldNotify(InheritedWidget oldWidget) {
     return false;
   }
+}
+
+const hour = 3600000;
+
+String durationStr(int ms) {
+  var format = 'mm:ss';
+  if (ms > hour) {
+    format = 'H:mm:ss';
+  }
+  return DateUtil.formatDateMs(
+    ms,
+    format: format,
+  );
 }

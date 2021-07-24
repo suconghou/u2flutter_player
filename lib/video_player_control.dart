@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:auto_orientation/auto_orientation.dart';
-import 'package:common_utils/common_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
@@ -124,13 +123,7 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
             // 播放时间
             margin: EdgeInsets.only(left: 10),
             child: Text(
-              '${DateUtil.formatDateMs(
-                _position.inMilliseconds,
-                format: 'mm:ss',
-              )}/${DateUtil.formatDateMs(
-                _totalDuration.inMilliseconds,
-                format: 'mm:ss',
-              )}',
+              '${durationStr(_position.inMilliseconds)}/${durationStr(_totalDuration.inMilliseconds)}',
               style: TextStyle(color: Colors.white),
             ),
           ),

@@ -133,15 +133,19 @@ class _VideoPlayerPanState extends State<VideoPlayerPan>
         await BVUtils.setBrightness(_setBrightnessValue());
         brightnessOk = false;
         // 左边触摸
-        setState(() {
-          playDialogOpacity = 0.0;
+        Future.delayed(Duration(milliseconds: 800)).whenComplete(() {
+          setState(() {
+            playDialogOpacity = 0.0;
+          });
         });
       }
     } else {
       // 右边触摸
       await controller.setVolume(_setVerticalValue());
-      setState(() {
-        playDialogOpacity = 0.0;
+      Future.delayed(Duration(milliseconds: 800)).whenComplete(() {
+        setState(() {
+          playDialogOpacity = 0.0;
+        });
       });
     }
   }
@@ -198,10 +202,8 @@ class _VideoPlayerPanState extends State<VideoPlayerPan>
     movePan += details.delta.dx;
     double value = _setHorizontalValue();
     // 用百分比计算出当前的秒数
-    String currentSecond = DateUtil.formatDateMs(
-      (value * controller.value.duration.inMilliseconds).toInt(),
-      format: 'mm:ss',
-    );
+    String currentSecond =
+        durationStr((value * controller.value.duration.inMilliseconds).toInt());
     if (value >= 0) {
       setState(() {
         volumePercentage = '快进至：$currentSecond';
@@ -223,8 +225,10 @@ class _VideoPlayerPanState extends State<VideoPlayerPan>
     int current = (value * controller.value.duration.inMilliseconds).toInt();
     await controller.seekTo(Duration(milliseconds: current));
     allowHorizontal = false;
-    setState(() {
-      playDialogOpacity = 0.0;
+    Future.delayed(Duration(milliseconds: 800)).whenComplete(() {
+      setState(() {
+        playDialogOpacity = 0.0;
+      });
     });
   }
 
