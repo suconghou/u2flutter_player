@@ -9,6 +9,8 @@ import 'package:video_player/video_player.dart';
 import 'controller_widget.dart';
 import 'video_player_slider.dart';
 
+int screenchange = 0;
+
 class VideoPlayerControl extends StatefulWidget {
   VideoPlayerControl({
     required Key key,
@@ -245,6 +247,7 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
   }
 
   void _toggleFullScreen() {
+    screenchange = DateTime.now().millisecondsSinceEpoch;
     setState(() {
       if (_isFullScreen) {
         /// 如果是全屏就切换竖屏
