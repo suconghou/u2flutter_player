@@ -57,7 +57,10 @@ class _VideoPlayerUIState extends State<VideoPlayerUI> {
     controller.removeListener(_videoListener);
     final t = DateTime.now().millisecondsSinceEpoch;
     final int tt = screenchange;
-    if (t - tt > 1000) {
+    print('dispose');
+    print(t - tt);
+    print(t - tt > 2000 || controller.dataSource != screenchangeUrl);
+    if (t - tt > 2000 || controller.dataSource != screenchangeUrl) {
       controller.pause();
       controller.dispose();
       Players.player = null;
@@ -208,8 +211,11 @@ class Players {
     }
     // 已经存在实例了,判断是否相同
     if (player?.dataSource != url || player!.value.hasError) {
+      player?.pause();
       player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
     }
+    print('getInstance');
+    print(url);
     return player!;
   }
 }

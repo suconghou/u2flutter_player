@@ -10,6 +10,7 @@ import 'controller_widget.dart';
 import 'video_player_slider.dart';
 
 int screenchange = 0;
+String screenchangeUrl = "";
 
 class VideoPlayerControl extends StatefulWidget {
   VideoPlayerControl({
@@ -248,19 +249,20 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
 
   void _toggleFullScreen() {
     screenchange = DateTime.now().millisecondsSinceEpoch;
+    screenchangeUrl = controller.dataSource;
     setState(() {
       if (_isFullScreen) {
         /// 如果是全屏就切换竖屏
         AutoOrientation.portraitAutoMode();
 
         ///显示状态栏，与底部虚拟操作按钮
-        SystemChrome.setEnabledSystemUIOverlays(
-            [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+            overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
       } else {
         AutoOrientation.landscapeAutoMode();
 
         ///关闭状态栏，与底部虚拟操作按钮
-        SystemChrome.setEnabledSystemUIOverlays([]);
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       }
       _startPlayControlTimer(); // 操作完控件开始计时隐藏
     });
