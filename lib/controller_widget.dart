@@ -34,12 +34,13 @@ String durationStr(int ms) {
   if (sec < 60) {
     return "00:$sec";
   }
-  final m = (sec / 60).floor();
-  final ss = sec - m * 60;
-  final s = "$m:$ss";
-  final h = (sec / 3600).floor();
-  if (h >= 1) {
-    return "$h:$s";
+  if (sec < 3600) {
+    final m = (sec / 60).floor();
+    final ss = sec - m * 60;
+    return "$m:$ss";
   }
-  return s;
+  final h = (sec / 3600).floor();
+  final mm = ((sec - 3600 * h) / 60).floor();
+  final ss = sec - 3600 * h - 60 * mm;
+  return "$h:$mm:$ss";
 }
