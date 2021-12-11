@@ -29,18 +29,25 @@ class ControllerWidget extends InheritedWidget {
   }
 }
 
+String _f(int s) {
+  if (s < 10) {
+    return "0$s";
+  }
+  return "$s";
+}
+
 String durationStr(int ms) {
   final sec = ms ~/ 1000;
   if (sec < 60) {
-    return "00:$sec";
+    return "00:${_f(sec)}";
   }
   if (sec < 3600) {
     final m = (sec / 60).floor();
     final ss = sec - m * 60;
-    return "$m:$ss";
+    return "${_f(m)}:${_f(ss)}";
   }
   final h = (sec / 3600).floor();
   final mm = ((sec - 3600 * h) / 60).floor();
   final ss = sec - 3600 * h - 60 * mm;
-  return "$h:$mm:$ss";
+  return "$h:${_f(mm)}:${_f(ss)}";
 }
