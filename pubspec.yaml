@@ -12,9 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  video_player: ^2.2.5
+  video_player: ^2.2.7
   brightness_volume: ^1.0.3
-  common_utils: ^2.0.2
   auto_orientation: ^2.1.0
 
 dev_dependencies:

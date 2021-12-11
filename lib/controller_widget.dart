@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:common_utils/common_utils.dart';
 
 import 'video_player_control.dart';
 
@@ -31,11 +30,14 @@ class ControllerWidget extends InheritedWidget {
 }
 
 String durationStr(int ms) {
-  final s = DateUtil.formatDateMs(
-    ms,
-    format: 'mm:ss',
-  );
-  final h = (ms / 3600000).floor();
+  final sec = ms ~/ 1000;
+  if (sec < 60) {
+    return "00:$sec";
+  }
+  final m = (sec / 60).floor();
+  final ss = sec - m * 60;
+  final s = "$m::$ss";
+  final h = (sec / 3600).floor();
   if (h >= 1) {
     return "$h:$s";
   }
