@@ -36,7 +36,7 @@ String durationStr(int ms) {
   }
   final m = (sec / 60).floor();
   final ss = sec - m * 60;
-  final s = "$m::$ss";
+  final s = "$m:$ss";
   final h = (sec / 3600).floor();
   if (h >= 1) {
     return "$h:$s";
