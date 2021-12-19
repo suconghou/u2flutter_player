@@ -57,9 +57,6 @@ class _VideoPlayerUIState extends State<VideoPlayerUI> {
     controller.removeListener(_videoListener);
     final t = DateTime.now().millisecondsSinceEpoch;
     final int tt = screenchange;
-    print('dispose');
-    print(t - tt);
-    print(t - tt > 2000 || controller.dataSource != screenchangeUrl);
     if (t - tt > 2000 || controller.dataSource != screenchangeUrl) {
       controller.pause();
       controller.dispose();
@@ -199,23 +196,31 @@ class PlayerOpts {
   final String url;
   PlayerOpts(this.url);
   VideoPlayerController get controller {
-    return Players.getInstance(url);
+    VideoFormat formatHint = VideoFormat.other;
+    final u = url.toLowerCase();
+    if (u.contains("mpd")) {
+      formatHint = VideoFormat.dash;
+    } else if (u.contains("m3u8") || u.contains("hls")) {
+      formatHint = VideoFormat.hls;
+    }
+    return Players.getInstance(url, formatHint: formatHint);
   }
 }
 
 class Players {
   static VideoPlayerController? player;
-  static VideoPlayerController getInstance(String url) {
+  static VideoPlayerController getInstance(String url,
+      {VideoFormat formatHint = VideoFormat.dash}) {
     if (player == null) {
-      player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
+      player = VideoPlayerController.network(url, formatHint: formatHint);
     }
     // 已经存在实例了,判断是否相同
-    if (player?.dataSource != url || player!.value.hasError) {
+    if (player?.dataSource != url ||
+        player!.value.hasError ||
+        player!.formatHint != formatHint) {
       player?.pause();
-      player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
+      player = VideoPlayerController.network(url, formatHint: formatHint);
     }
-    print('getInstance');
-    print(url);
     return player!;
   }
 }
