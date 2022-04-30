@@ -41,8 +41,11 @@ class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
         position = duration;
       }
       setState(() {
-        progressValue = position / duration * 100;
-        labelProgress = durationStr(progressValue.toInt());
+        double x = position / duration * 100;
+        if (x.isFinite) {
+          progressValue = x;
+          labelProgress = durationStr(x.toInt());
+        }
       });
     }
   }
